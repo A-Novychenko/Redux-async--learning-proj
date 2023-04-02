@@ -39,10 +39,28 @@ const tasksSlice = createSlice({
     deleteAll(state) {
       state.items = [];
     },
-    fetchTask() {},
+    fetchingInProgress(state) {
+      state.isLoading = true;
+    },
+    fetchingSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      state.items = action.payload;
+    },
+    fetchingError(state, action) {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
   },
 });
 
-export const { addTask, deleteTask, toggleCompleted, deleteAll } =
-  tasksSlice.actions;
+export const {
+  addTask,
+  deleteTask,
+  toggleCompleted,
+  deleteAll,
+  fetchingInProgress,
+  fetchingSuccess,
+  fetchingError,
+} = tasksSlice.actions;
 export const tasksReducer = tasksSlice.reducer;
