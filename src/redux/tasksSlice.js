@@ -27,6 +27,7 @@ const tasksSlice = createSlice({
         };
       },
     },
+
     deleteTask(state, action) {
       const ind = state.findIndex(task => task.id === action.payload);
       state.splice(ind, 1);
