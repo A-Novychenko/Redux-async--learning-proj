@@ -5,7 +5,7 @@ import {
   fetchingError,
 } from './tasksSlice';
 
-axios.defaults.baseURL = 'https://62584f320c918296a49543e7.mockapi.io';
+axios.defaults.baseURL = 'https://6403b8063bdc59fa8f2bad68.mockapi.io';
 
 export const fetchTasks = () => async dispatch => {
   try {
