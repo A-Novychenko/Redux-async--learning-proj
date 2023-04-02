@@ -1,10 +1,15 @@
 import { Task } from 'components/Task/Task';
 import { useDispatch, useSelector } from 'react-redux';
 import { statusFilters } from 'redux/constants';
-import { getStatusFilter, getTasks, getTasksState } from 'redux/selectors';
+import {
+  getError,
+  getIsLoading,
+  getStatusFilter,
+  getTasks,
+} from 'redux/selectors';
 import css from './TaskList.module.css';
 import { useEffect } from 'react';
-import { fetchTasks } from 'redux/operations';
+import { getAllTasks } from 'redux/operations';
 
 const getVisibleTasks = (tasks, statusFilter) => {
   switch (statusFilter) {
@@ -20,15 +25,18 @@ const getVisibleTasks = (tasks, statusFilter) => {
 export const TaskList = () => {
   const dispatch = useDispatch();
   const tasks = useSelector(getTasks);
-  const { isLoading, error } = useSelector(getTasksState);
+  const isLoading = useSelector(getIsLoading);
+
+  const error = useSelector(getError);
 
   const statusFilter = useSelector(getStatusFilter);
   const visibleTasks = getVisibleTasks(tasks, statusFilter);
 
   useEffect(() => {
-    dispatch(fetchTasks());
+    dispatch(getAllTasks());
   }, [dispatch]);
 
+  console.log('visibleTasks', visibleTasks);
   return (
     <>
       {isLoading && <p>Loading tasks...</p>}
