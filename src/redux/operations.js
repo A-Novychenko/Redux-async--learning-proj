@@ -41,3 +41,16 @@ export const addTask = createAsyncThunk(
     }
   }
 );
+
+export const deleteTask = createAsyncThunk(
+  'task/deleteTask',
+  async (id, { rejectWithValue }) => {
+    try {
+      const resp = await axios.delete(`tasks/${id}`);
+      console.log('resp.data', resp.data);
+      return resp.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
