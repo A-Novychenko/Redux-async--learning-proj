@@ -22,8 +22,11 @@ export const TaskList = () => {
 
   return (
     <>
-      {isLoading && <p>Loading tasks...</p>}
-      {error && <p>{error}</p>}
+      <p style={{ height: '30px' }}>
+        {isLoading && 'Loading tasks...'}
+        {error && { error }}
+      </p>
+
       <ul className={css.list}>
         {visibleTasks.map(task => (
           <li className={css.listItem} key={task.id}>
