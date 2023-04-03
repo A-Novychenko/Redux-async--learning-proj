@@ -36,7 +36,6 @@ export const TaskList = () => {
     dispatch(getAllTasks());
   }, [dispatch]);
 
-  console.log('visibleTasks', visibleTasks);
   return (
     <>
       {isLoading && <p>Loading tasks...</p>}

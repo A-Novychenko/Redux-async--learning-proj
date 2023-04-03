@@ -31,7 +31,7 @@ export const getAllTasks = createAsyncThunk(
 );
 
 export const addTask = createAsyncThunk(
-  'task/addTask',
+  'tasks/addTask',
   async (config, { rejectWithValue }) => {
     try {
       const resp = await axios.post('/tasks', config);
@@ -43,11 +43,38 @@ export const addTask = createAsyncThunk(
 );
 
 export const deleteTask = createAsyncThunk(
-  'task/deleteTask',
+  'tasks/deleteTask',
   async (id, { rejectWithValue }) => {
     try {
-      const resp = await axios.delete(`tasks/${id}`);
-      console.log('resp.data', resp.data);
+      const resp = await axios.delete(`/tasks/${id}`);
+
+      return resp.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const toggleCompleted = createAsyncThunk(
+  'tasks/toggleCompleted',
+  async (task, { rejectWithValue }) => {
+    try {
+      const resp = await axios.put(`/tasks/${task.id}`, {
+        completed: !task.completed,
+      });
+
+      return resp.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const deleteAll = createAsyncThunk(
+  'tasks/deleteAll',
+  async (_, { rejectWithValue }) => {
+    try {
+      const resp = await axios.put(`tasks/`);
       return resp.data;
     } catch (error) {
       return rejectWithValue(error.message);

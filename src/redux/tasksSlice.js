@@ -1,5 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getAllTasks, addTask, deleteTask } from './operations';
+import {
+  getAllTasks,
+  addTask,
+  deleteTask,
+  toggleCompleted,
+  // deleteAll,
+} from './operations';
+
+const handlePending = state => {
+  state.isLoading = true;
+};
+const handleRejected = (state, { payload }) => {
+  state.isLoading = false;
+  state.error = payload;
+};
 
 const tasksSlice = createSlice({
   name: 'tasks',
@@ -10,49 +24,48 @@ const tasksSlice = createSlice({
   },
 
   extraReducers: {
-    [getAllTasks.pending]: state => {
-      state.isLoading = true;
-    },
+    [getAllTasks.pending]: handlePending,
+    [addTask.pending]: handlePending,
+    [deleteTask.pending]: handlePending,
+    [toggleCompleted.pending]: handlePending,
+    // [deleteAll.pending]: handlePending,
+
+    [getAllTasks.rejected]: handleRejected,
+    [addTask.rejected]: handleRejected,
+    [deleteTask.rejected]: handleRejected,
+    [toggleCompleted.rejected]: handleRejected,
+    // [deleteAll.rejected]: handleRejected,
+
     [getAllTasks.fulfilled]: (state, { payload }) => {
       state.isLoading = false;
       state.items = payload;
     },
-    [getAllTasks.rejected]: (state, { payload }) => {
-      state.isLoading = false;
-      state.error = payload;
-    },
-    [addTask.pending](state) {
-      state.isLoading = true;
-    },
+
     [addTask.fulfilled](state, action) {
       state.isLoading = false;
       state.error = null;
       state.items.push(action.payload);
     },
-    [addTask.rejected](state, action) {
-      state.isLoading = false;
-      state.error = action.payload;
-    },
-    [deleteTask.pending](state) {
-      state.isLoading = true;
-    },
+
     [deleteTask.fulfilled](state, { payload }) {
       state.isLoading = false;
       state.error = null;
       state.items = state.items.filter(task => task.id !== payload.id);
     },
-    [deleteTask.rejected](state, action) {
+
+    [toggleCompleted.fulfilled](state, { payload }) {
       state.isLoading = false;
-      state.error = action.payload;
+      state.error = null;
+      const idx = state.items.findIndex(task => task.id === payload.id);
+      state.items.splice(idx, 1, payload);
     },
+
+    // [deleteAll.fulfilled](state, { payload }) {
+    //   state.isLoading = false;
+    //   state.error = null;
+    //   state = payload;
+    // },
   },
 });
 
-export const {
-  toggleCompleted,
-  deleteAll,
-  fetchingInProgress,
-  fetchingSuccess,
-  fetchingError,
-} = tasksSlice.actions;
 export const tasksReducer = tasksSlice.reducer;
