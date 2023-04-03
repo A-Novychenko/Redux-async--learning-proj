@@ -1,36 +1,20 @@
-import { Task } from 'components/Task/Task';
-import { useDispatch, useSelector } from 'react-redux';
-import { statusFilters } from 'redux/constants';
-import {
-  getError,
-  getIsLoading,
-  getStatusFilter,
-  getTasks,
-} from 'redux/selectors';
-import css from './TaskList.module.css';
 import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Task } from 'components/Task/Task';
+import {
+  selectError,
+  selectIsLoading,
+  selectVisibleTasks,
+} from 'redux/selectors';
 import { getAllTasks } from 'redux/operations';
-
-const getVisibleTasks = (tasks, statusFilter) => {
-  switch (statusFilter) {
-    case statusFilters.active:
-      return tasks.filter(task => !task.completed);
-    case statusFilters.completed:
-      return tasks.filter(task => task.completed);
-    default:
-      return tasks;
-  }
-};
+import css from './TaskList.module.css';
 
 export const TaskList = () => {
   const dispatch = useDispatch();
-  const tasks = useSelector(getTasks);
-  const isLoading = useSelector(getIsLoading);
 
-  const error = useSelector(getError);
-
-  const statusFilter = useSelector(getStatusFilter);
-  const visibleTasks = getVisibleTasks(tasks, statusFilter);
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
+  const visibleTasks = useSelector(selectVisibleTasks);
 
   useEffect(() => {
     dispatch(getAllTasks());

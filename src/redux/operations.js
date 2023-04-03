@@ -70,14 +70,14 @@ export const toggleCompleted = createAsyncThunk(
   }
 );
 
-export const deleteAll = createAsyncThunk(
-  'tasks/deleteAll',
-  async (_, { rejectWithValue }) => {
-    try {
-      const resp = await axios.put(`tasks/`);
-      return resp.data;
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-);
+// export const deleteAll = createAsyncThunk(
+//   'tasks/deleteAll',
+//   async (_, { rejectWithValue }) => {
+//     try {
+//       const resp = await axios.put(`tasks/`);
+//       return resp.data;
+//     } catch (error) {
+//       return rejectWithValue(error.message);
+//     }
+//   }
+// );
